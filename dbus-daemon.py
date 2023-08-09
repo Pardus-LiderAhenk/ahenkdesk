@@ -8,7 +8,7 @@ from gi.repository import GLib # dbus kütüphanesinin kendi içinde bulunan dae
 UID         =  'org.ahenkdesk.dbus.Daemon'
 UID_AS_PATH = '/org/ahenkdesk/dbus/Daemon' # burada bus veri yolumuz için bir well known name ve bu isme uygun bir yol belirlememiz gerekiyor.
 # bu isimin benzersiz olmasına dikkat edilmeli
-EX_DATA = 'Ahenkten gelen mesaj' 
+EX_DATA = '' 
 
 class MyappDaemon(dbus.service.Object): # bir class tanımlayıp bunu dbus servis objesi olarak tanımlıyoruz
 # böylece mesajlarımızı taşıyan yapıya sahip olacağız
@@ -37,6 +37,9 @@ class MyappDaemon(dbus.service.Object): # bir class tanımlayıp bunu dbus servi
     # dbus servis method bitişi
 
 def main():
+    global EX_DATA
+    EX_DATA=input("Gönderilicek mesajı girin: ")
+    print("Gönderilen mesaj: " + EX_DATA)
     DBusGMainLoop(set_as_default=True) #main methodumuzu bir daemona dönüştürüyoruz
     try:
         bus_name = dbus.service.BusName(

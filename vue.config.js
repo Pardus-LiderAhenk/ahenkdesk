@@ -1,10 +1,18 @@
-const { defineConfig } = require('@vue/cli-service')
+const path = require('path');
 
-module.exports = defineConfig({
-  transpileDependencies: true,
-  pluginOptions:{
+module.exports = {
+  configureWebpack: {
+    resolve: {
+      fallback: {
+        fs: false,
+        path: require.resolve('path-browserify'),
+        child_process: false,
+      },
+    },
+  },
+  pluginOptions: {
     electronBuilder: {
-      nodeIntegration:true,
-    }
-  }
-})
+      nodeIntegration: true,
+    },
+  },
+};

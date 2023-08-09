@@ -1,27 +1,38 @@
-import { createRouter, createWebHashHistory } from "vue-router";
-import HomePage from "@/views/HomePage.vue"
-import FormPage from "@/views/FormPage.vue"
-import MessageHistoryPage from "@/views/MessageHistoryPage.vue"
-const routes = [
-    {
-        path:"/",
-        name:"home",
-        component:HomePage
-    },
-    {
-        path:"/form",
-        name:"form",
-        component:FormPage
-    },
-    {
-        path:"/message",
-        name:"message",
-        component:MessageHistoryPage
-    }
+import { createRouter, createWebHistory } from "vue-router";
 
-]
+import routes from "./route";
+
 const router = createRouter({
-    routes,
-    history:createWebHashHistory()
-})
-export default router 
+  history: createWebHistory(import.meta.BASE_URL),
+  base: import.meta.BASE_URL,
+  routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    } else {
+      return { top: 0 };
+    }
+  },
+});
+router.beforeEach((to, from, next) => {
+  const titleText = to.name;
+  const words = titleText.split(" ");
+  const wordslength = words.length;
+  for (let i = 0; i < wordslength; i++) {
+    words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+  }
+
+  document.title = "Ahenk";
+
+  next();
+});
+
+router.afterEach(() => {
+  // Remove initial loading
+  const appLoading = document.getElementById("loading-bg");
+  if (appLoading) {
+    appLoading.style.display = "none";
+  }
+});
+
+export default router;
